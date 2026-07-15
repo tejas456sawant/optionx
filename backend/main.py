@@ -14,6 +14,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3001",
+        "https://optionx-two.vercel.app"
     ],
     allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["*"],
@@ -29,7 +30,8 @@ def startup() -> None:
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    print(f"OptionX API request: {request.method} {request.url.path}", flush=True)
+    print(
+        f"OptionX API request: {request.method} {request.url.path}", flush=True)
     return await call_next(request)
 
 

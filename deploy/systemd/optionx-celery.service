@@ -1,0 +1,20 @@
+[Unit]
+Description=OptionX Celery worker
+After=network-online.target redis-server.service
+Wants=network-online.target
+PartOf=optionx.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/optionx/backend
+EnvironmentFile=/home/ubuntu/optionx/backend/.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/ubuntu/optionx/backend/.venv/bin/celery -A app.celery_app.celery_app worker --loglevel=INFO
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=60
+
+[Install]
+WantedBy=optionx.target

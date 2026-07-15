@@ -1,0 +1,7 @@
+[Unit]
+Description=OptionX backend services
+Requires=optionx-api.service optionx-celery.service
+After=optionx-api.service optionx-celery.service
+
+[Install]
+WantedBy=multi-user.target

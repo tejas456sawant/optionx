@@ -39,18 +39,24 @@ uv run celery -A app.celery_app.celery_app worker --loglevel=info
 
 Postgres and Redis must be running before the API and worker start.
 
+## Production service
+
+Example `systemd` units for running the API and Celery continuously are in
+[`../deploy/systemd/`](../deploy/systemd/README.md). They run the API on port
+`5000` by default and include instructions for switching it to port `7000`.
+
 ## Covered Calls
 
 Immediate single-symbol scan:
 
 ```bash
-curl "http://127.0.0.1:8000/covered-calls?symbol=NVDA"
+curl "http://127.0.0.1:5000/covered-calls?symbol=NVDA"
 ```
 
 Background stock-list scan:
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/covered-calls/jobs" \
+curl -X POST "http://127.0.0.1:5000/covered-calls/jobs" \
   -H "content-type: application/json" \
   -d '{"symbols":["NVDA","SNDK"],"strike_proximity":80,"expiration_limit":0}'
 ```
@@ -58,7 +64,7 @@ curl -X POST "http://127.0.0.1:8000/covered-calls/jobs" \
 Cron-triggered scan using `COVERED_CALL_SYMBOLS`:
 
 ```bash
-curl "http://127.0.0.1:8000/cron/covered-calls?token=change_me"
+curl "http://127.0.0.1:5000/cron/covered-calls?token=change_me"
 ```
 
 The scanner only saves monthly and LEAPS-style expirations returned by
